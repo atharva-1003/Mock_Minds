@@ -70,11 +70,3 @@ Mock Minds is an AI-powered mock interview platform that helps users practice fo
 4. Follow the prompts to answer questions
 5. Receive feedback on your answers and facial expressions
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Thanks to all contributors who have helped with this project
-- Special thanks to the open-source community for the tools and libraries used in this project 
