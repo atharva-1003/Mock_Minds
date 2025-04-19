@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Emotion Detection</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f0f0f0;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+      margin: auto;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input[type="file"] {
+      margin: 10px 0;
+    }
+    #preview {
+      max-width: 100%;
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+    #emotionResult {
+      font-size: 20px;
+      margin-top: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Upload Image to Detect Emotion</h2>
+    <form id="uploadForm">
+      <input type="file" id="imageInput" name="file" accept="image/*" required><br>
+      <button type="submit">Detect Emotion</button>
+    </form>
+    <img id="preview" />
+    <div id="emotionResult"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+    const emotionResult = document.getElementById('emotionResult');
+
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('file', imageInput.files[0]);
+
+      emotionResult.textContent = "Detecting...";
+
+      try {
+        const res = await fetch('/predict', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        emotionResult.textContent = data.emotion ? `Emotion: ${data.emotion}` : data.error;
+      } catch (err) {
+        emotionResult.textContent = 'Error connecting to API';
+      }
+    });
+  </script>
+</body>
+</html>
