@@ -4,7 +4,7 @@ import { MockInterview } from '@/utils/schema';
 import { eq } from 'drizzle-orm';
 import React, { useEffect, useState } from 'react'
 import QuestionsSection from './_components/QuestionsSection';
-import RecordAnswerSection from './_components/RecordAnswerSection';
+import RecordAnswerSection from './_components/RecordAnswerSection/index';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -41,6 +41,7 @@ function StartInterview({params}) {
                     return;
                 }
 
+                console.log('Setting questions:', jsonMockResp);
                 setMockInterviewQuestion(jsonMockResp);
                 setInterviewData(result[0]);
             } catch (parseError) {
@@ -51,6 +52,14 @@ function StartInterview({params}) {
             console.error('Database error:', dbError);
         }
     } 
+
+    // Add debug logs for question changes
+    useEffect(() => {
+        console.log('Current question index:', activeQuestionIndex);
+        console.log('Questions available:', mockInterviewQuestion);
+        console.log('Current question:', mockInterviewQuestion?.[activeQuestionIndex]);
+    }, [activeQuestionIndex, mockInterviewQuestion]);
+
   return (
     <div>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
@@ -65,6 +74,7 @@ function StartInterview({params}) {
              mockInterviewQuestion={mockInterviewQuestion}
              activeQuestionIndex={activeQuestionIndex}
              interviewData={interviewData}
+             setActiveQuestionIndex={setActiveQuestionIndex}
             />
         </div>
         <div className='flex justify-end gap-6'>
